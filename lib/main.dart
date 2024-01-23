@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:on_essaie_encore/AjoutEvent.dart';
 import 'MonProfil.dart';
 import 'HomePage.dart';
 
@@ -34,6 +35,7 @@ class _MyAppState extends State<MyApp> {
         ),
         body: [
           HomePage(),
+          AjoutEvent(),
           MyProfile()
         ][_currentIndex],
         bottomNavigationBar: BottomNavigationBar(
