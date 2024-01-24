@@ -1,29 +1,48 @@
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({
-    super.key,
-  });
+
+class HomePage extends StatefulWidget {
+  const HomePage({super.key,});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+
+  final events = [
+    {
+      "speaker": "loic flament",
+      "date": "13h à 13h30",
+      "subject": "Le code legacy",
+      "avatar": "lior"
+    },
+    {
+      "speaker": "adrien blassel",
+      "date": "13h à 13h30",
+      "subject": "TrustEval",
+      "avatar": "coucou"
+    },
+  ];
+  @override
   Widget build(BuildContext context) {
-    return const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Voici l'application TrustEval.",
-              style: TextStyle(
-                fontSize: 24,
-              ),
-            ),
-            Text(
-              "Une application permettant de creer des evenements et de les approuver",
-              style: TextStyle(
-                fontSize: 12,
-              ),
-            ),
-          ],
+    return Center(
+        child: ListView.builder(
+          itemCount: events.length,
+          itemBuilder: (context, index){
+            final event = events[index];
+            final avatar = event['avatar'];
+            final speaker = event['speaker'];
+            final date = event['date'];
+             return  Card(
+                  child: ListTile(
+                    leading: FlutterLogo(size: 56.0),
+                    title:  Text('$speaker'),
+                    subtitle: Text('$date'),
+                    trailing:  Icon(Icons.more_vert),
+                  ),
+                );
+          },
         )
     );
   }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:on_essaie_encore/AjoutEvent.dart';
 import 'MonProfil.dart';
 import 'HomePage.dart';
-
+import 'Authentification.dart';
 void main() {
   runApp(const MyApp());
   
@@ -36,7 +36,8 @@ class _MyAppState extends State<MyApp> {
         body: [
           HomePage(),
           AjoutEvent(),
-          MyProfile()
+          MyProfile(),
+         // AuthPage(),
         ][_currentIndex],
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _currentIndex,
@@ -73,6 +74,3 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-
-
-
