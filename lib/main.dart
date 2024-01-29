@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:on_essaie_encore/pages/AjoutEvent.dart';
 import 'pages/MonProfil.dart';
 import 'pages/HomePage.dart';
+import 'map.dart';
+import 'RechercherUser.dart';
 import 'pages/Authentification.dart';
 void main() {
   runApp(const MyApp());
@@ -35,9 +37,10 @@ class _MyAppState extends State<MyApp> {
         ),
         body: [
           HomePage(),
-          AjoutEvent(),
+          RechercherUser(),
           MyProfile(),
-         // AuthPage(),
+          AjoutEvent(),
+          Mymap(),
         ][_currentIndex],
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _currentIndex,
@@ -65,7 +68,7 @@ class _MyAppState extends State<MyApp> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.map),
-              label: 'Ajouter un evenements',
+              label: 'Carte',
 
             ),
           ],
