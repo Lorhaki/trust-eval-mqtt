@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:on_essaie_encore/AjoutEvent.dart';
 import 'MonProfil.dart';
 import 'HomePage.dart';
-import 'Authentification.dart';
+import 'map.dart';
+import 'RechercherUser.dart';
+
 void main() {
   runApp(const MyApp());
   
@@ -18,7 +20,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
 
   int _currentIndex = 0;
-
   setCurrentIndex(int index){
     setState(() {
       _currentIndex = index;
@@ -35,9 +36,10 @@ class _MyAppState extends State<MyApp> {
         ),
         body: [
           HomePage(),
-          AjoutEvent(),
+          RechercherUser(),
           MyProfile(),
-         // AuthPage(),
+          AjoutEvent(),
+          Mymap(),
         ][_currentIndex],
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _currentIndex,
@@ -72,5 +74,5 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
     );
+    }
   }
-}
