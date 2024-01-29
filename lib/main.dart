@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:on_essaie_encore/AjoutEvent.dart';
-import 'MonProfil.dart';
-import 'HomePage.dart';
-import 'Authentification.dart';
+import 'package:on_essaie_encore/pages/AjoutEvent.dart';
+import 'pages/MonProfil.dart';
+import 'pages/HomePage.dart';
+import 'pages/Authentification.dart';
 void main() {
   runApp(const MyApp());
   

@@ -11,6 +11,8 @@ class _AjoutEventState extends State<AjoutEvent> {
   final _formkey = GlobalKey<FormState>();
 
   final eventController = TextEditingController();
+  String duree = '10';
+  String type  = 'retard';
 
   @override
   Widget build(BuildContext context) {
@@ -48,10 +50,35 @@ class _AjoutEventState extends State<AjoutEvent> {
                           DropdownMenuItem(value: '10', child: Text("10 min"))
                         ],
                         decoration: const InputDecoration(
+                            labelText: 'durée',
                             border: OutlineInputBorder()
                         ),
-                        value: '60',
-                        onChanged: (value){}
+                        value: duree,
+                        onChanged: (value){
+                          setState(() {
+                            duree = value!;
+                          });
+                        }
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 10),
+                    child: DropdownButtonFormField(
+                        items: const[
+                          DropdownMenuItem(value: 'retard', child: Text("Retard d'un professeur")),
+                          DropdownMenuItem(value: 'personalisé', child: Text("Personalisé")),
+                          DropdownMenuItem(value: 'ru', child: Text("Queue au RU"))
+                        ],
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                          labelText: 'type'
+                        ),
+                        value: type,
+                        onChanged: (value){
+                          setState(() {
+                            type = value!;
+                          });
+                        }
                     ),
                   ),
                   SizedBox(
@@ -64,7 +91,7 @@ class _AjoutEventState extends State<AjoutEvent> {
                             {
                               final nom = eventController.text;
 
-                              print("ajout de $nom");
+                              print("ajout de $nom de $duree");
                               /*
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(content: Text("Envoi en cours..."))
