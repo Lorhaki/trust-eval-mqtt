@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
-class MyAuth extends StatelessWidget {
-  const MyAuth({super.key});
+class Mymap extends StatelessWidget {
+  const Mymap({super.key});
 
   @override
   Widget build(BuildContext context) {
