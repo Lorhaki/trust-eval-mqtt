@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'SousPages/descriptionEvent.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key,});
@@ -34,13 +34,22 @@ class _HomePageState extends State<HomePage> {
             final avatar = event['avatar'];
             final speaker = event['speaker'];
             final date = event['date'];
-             return  Card(
+             return  GestureDetector(
+               child: Card(
                   child: ListTile(
                     leading: FlutterLogo(size: 56.0),
                     title:  Text('$speaker'),
                     subtitle: Text('$date'),
                     trailing:  Icon(Icons.more_vert),
                   ),
+               ),
+               onTap: (){
+                    print('$speaker');
+                    Navigator.push(
+                        context, MaterialPageRoute(
+                        builder: (context)=>descriptionEvent()
+                    ));
+               },
                 );
           },
         )
