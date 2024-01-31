@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class AjoutEvent extends StatefulWidget {
@@ -91,13 +93,19 @@ class _AjoutEventState extends State<AjoutEvent> {
                             {
                               final nom = eventController.text;
 
-                              print("ajout de $nom de $duree");
+                              //print("ajout de $nom de $duree");
                               /*
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(content: Text("Envoi en cours..."))
                                   );
                                   FocusScope.of(context).requestFocus(FocusNode());
                                  */
+                              CollectionReference eventsRef =  FirebaseFirestore.instance.collection("Events");
+                              eventsRef.add({
+                                "confiance" : 50,
+                                "duree" : int.parse(duree),
+                                "type" : type,
+                              });
                             }
 
                           },

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "911454630258",
+    "project_id": "trusteval-f7211",
+    "storage_bucket": "trusteval-f7211.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:911454630258:android:610468f3c4457628b52deb",
+        "android_client_info": {
+          "package_name": "com.example.on_essaie_encore"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHodvBziUnDA3MZIaR0VwoezpWWg7hK2k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
