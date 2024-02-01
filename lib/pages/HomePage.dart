@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:on_essaie_encore/objets/Event.dart';
 import 'SousPages/descriptionEvent.dart';
 
 class HomePage extends StatefulWidget {
@@ -10,19 +11,24 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  final events = [
-    {
-      "speaker": "loic flament",
-      "date": "13h à 13h30",
-      "subject": "Le code legacy",
-      "avatar": "lior"
-    },
-    {
-      "speaker": "adrien blassel",
-      "date": "13h à 13h30",
-      "subject": "TrustEval",
-      "avatar": "coucou"
-    },
+  final List<Event> events = [
+    Event(  "adrien",
+        "incendie",
+        "l'ecole à pris feu",
+        51.50,
+        51.2,
+        "22 fevrier",
+        false,
+        22),
+    Event(  "Loic",
+        "incendie",
+        "l'ecole à pris feu",
+        51.4,
+        51.3,
+        "22 fevrier",
+        false,
+        78)
+
   ];
   @override
   Widget build(BuildContext context) {
@@ -30,27 +36,23 @@ class _HomePageState extends State<HomePage> {
         child: ListView.builder(
           itemCount: events.length,
           itemBuilder: (context, index){
-            final event = events[index];
-            final avatar = event['avatar'];
-            final speaker = event['speaker'];
-            final date = event['date'];
-             return  GestureDetector(
-               child: Card(
-                  child: ListTile(
-                    leading: const FlutterLogo(size: 56.0),
-                    title:  Text('$speaker'),
-                    subtitle: Text('$date'),
-                    trailing:  const Icon(Icons.more_vert),
+            return  GestureDetector(
+              child: Card(
+                child: ListTile(
+                  leading: FlutterLogo(size: 56.0),
+                  title:  Text(events[index].auteur),
+                  subtitle: Text(events[index].type),
+                  trailing:  Icon(Icons.more_vert),
+                ),
+              ),
+              onTap: (){
+                Navigator.push(
+                    context, MaterialPageRoute(
+                  builder: (context)=> descriptionEvent( event: events[index]
                   ),
-               ),
-               onTap: (){
-                    print('$speaker');
-                    Navigator.push(
-                        context, MaterialPageRoute(
-                        builder: (context)=>const descriptionEvent()
-                    ));
-               },
-                );
+                ));
+              },
+            );
           },
         )
     );
