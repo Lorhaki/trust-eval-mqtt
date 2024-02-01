@@ -4,7 +4,6 @@ import 'pages/MonProfil.dart';
 import 'pages/HomePage.dart';
 import 'map.dart';
 import 'RechercherUser.dart';
-import 'pages/Authentification.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
@@ -48,11 +47,11 @@ class _MyAppState extends State<MyApp> {
           title: const Text("TrustEval"),
         ),
         body: [
-          HomePage(),
-          RechercherUser(),
-          MyProfile(),
-          AjoutEvent(),
-          Mymap(),
+          const HomePage(),
+          const RechercherUser(),
+          const MyProfile(),
+          const AjoutEvent(),
+          const Mymap(),
         ][_currentIndex],
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _currentIndex,

@@ -12,7 +12,7 @@ class descriptionEvent extends StatelessWidget {
           backgroundColor: Colors.red,
           title: const Text("Description de l'évenement"),
         ),
-        body: Center(
+        body: const Center(
          child: Text("Bientot disponible"),
         )
     );

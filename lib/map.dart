@@ -53,7 +53,7 @@ class _MyMarkerMap extends State<Mymap>{
                       point: LatLng(latitude, longitude),
                       builder: (context) => Container(
                       child: IconButton(
-                      icon: Icon(Icons.location_on),
+                      icon: const Icon(Icons.location_on),
                       color: Colors.red,
                       onPressed: () {
                             },

@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class AjoutEvent extends StatefulWidget {
@@ -15,18 +14,19 @@ class _AjoutEventState extends State<AjoutEvent> {
   final eventController = TextEditingController();
   String duree = '10';
   String type  = 'retard';
+  String nom = 'Par defaut';
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         home: Container(
-          margin: EdgeInsets.all(20),
+          margin: const EdgeInsets.all(20),
           child: Form(
               key: _formkey,
               child: Column(
                 children: [
                   Container(
-                    margin: EdgeInsets.only(bottom: 10),
+                    margin: const EdgeInsets.only(bottom: 10),
                     child: TextFormField(
                       decoration: const InputDecoration(
                           labelText: 'Nom evenement',
@@ -38,6 +38,10 @@ class _AjoutEventState extends State<AjoutEvent> {
                         {
                           return "Nom incompatible";
                         }
+                        else
+                          {
+                            nom = value;
+                          }
                         return null;
                       },
                       controller: eventController,
@@ -105,6 +109,8 @@ class _AjoutEventState extends State<AjoutEvent> {
                                 "confiance" : 50,
                                 "duree" : int.parse(duree),
                                 "type" : type,
+                                "utilisateur" : "Adrien",
+                                "nom" : nom
                               });
                             }
 

@@ -5,6 +5,8 @@ import 'package:on_essaie_encore/mqtt/MQTTAppState.dart';
 import 'package:on_essaie_encore/mqtt/MQTTManager.dart';
 
 class MQTTView extends StatefulWidget {
+  const MQTTView({super.key});
+
   @override
   State<StatefulWidget> createState() {
     return _MQTTViewState();
@@ -145,7 +147,7 @@ class _MQTTViewState extends State<MQTTView> {
   Widget _buildScrollableTextWith(String text) {
     return Padding(
       padding: const EdgeInsets.all(20.0),
-      child: Container(
+      child: SizedBox(
         width: 400,
         height: 200,
         child: SingleChildScrollView(
@@ -162,10 +164,11 @@ class _MQTTViewState extends State<MQTTView> {
           // ignore: deprecated_member_use
           child: ElevatedButton(
             //color: Colors.lightBlueAccent,
-            child: const Text('Connect'),
             onPressed: state == MQTTAppConnectionState.disconnected
                 ? _configureAndConnect
-                : null, //
+                : null,
+            //color: Colors.lightBlueAccent,
+            child: const Text('Connect'), //
           ),
         ),
         const SizedBox(width: 10),
@@ -173,10 +176,11 @@ class _MQTTViewState extends State<MQTTView> {
           // ignore: deprecated_member_use
           child: ElevatedButton(
             //color: Colors.redAccent,
-            child: const Text('Disconnect'),
             onPressed: state == MQTTAppConnectionState.connected
                 ? _disconnect
-                : null, //
+                : null,
+            //color: Colors.redAccent,
+            child: const Text('Disconnect'), //
           ),
         ),
       ],
@@ -187,12 +191,13 @@ class _MQTTViewState extends State<MQTTView> {
     // ignore: deprecated_member_use
     return ElevatedButton(
       //color: Colors.green,
-      child: const Text('Send'),
       onPressed: state == MQTTAppConnectionState.connected
           ? () {
         _publishMessage(_messageTextController.text);
       }
-          : null, //
+          : null,
+      //color: Colors.green,
+      child: const Text('Send'), //
     );
   }
 
@@ -233,7 +238,7 @@ class _MQTTViewState extends State<MQTTView> {
     if (Platform.isAndroid) {
       osPrefix = 'Flutter_Android';
     }
-    final String message = osPrefix + ' says: ' + text;
+    final String message = '$osPrefix says: $text';
     manager.publish(message);
     _messageTextController.clear();
   }

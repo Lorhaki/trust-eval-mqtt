@@ -37,17 +37,17 @@ class _HomePageState extends State<HomePage> {
              return  GestureDetector(
                child: Card(
                   child: ListTile(
-                    leading: FlutterLogo(size: 56.0),
+                    leading: const FlutterLogo(size: 56.0),
                     title:  Text('$speaker'),
                     subtitle: Text('$date'),
-                    trailing:  Icon(Icons.more_vert),
+                    trailing:  const Icon(Icons.more_vert),
                   ),
                ),
                onTap: (){
                     print('$speaker');
                     Navigator.push(
                         context, MaterialPageRoute(
-                        builder: (context)=>descriptionEvent()
+                        builder: (context)=>const descriptionEvent()
                     ));
                },
                 );
