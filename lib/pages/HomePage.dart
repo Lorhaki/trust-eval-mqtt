@@ -12,16 +12,20 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   final List<Event> events = [
-    Event(  "adrien",
-        "incendie",
-        "l'ecole à pris feu",
+    Event(  "Adrien",
+        "Incendie",
+        "azera azerkjnldv a zle kazemlr,azef,kazmkle amzler,alerazerazeraze adhufazerba"
+            "uzerbyzeu"
+            "azerahzerbhab kazerjkazenranz erakjzernazerkjz nkazerjkazebr "
+            "azer,knazkjernjakze fazkler,naezklrklazenr "
+            "azkje jrajkzerjakzenrkzejr",
         51.50,
         51.2,
         "22 fevrier",
         false,
         22),
     Event(  "Loic",
-        "incendie",
+        "Incendie",
         "l'ecole à pris feu",
         51.4,
         51.3,
@@ -40,8 +44,8 @@ class _HomePageState extends State<HomePage> {
               child: Card(
                 child: ListTile(
                   leading: FlutterLogo(size: 56.0),
-                  title:  Text(events[index].auteur),
-                  subtitle: Text(events[index].type),
+                  title:  Text(events[index].type),
+                  subtitle: Text(events[index].auteur),
                   trailing:  Icon(Icons.more_vert),
                 ),
               ),

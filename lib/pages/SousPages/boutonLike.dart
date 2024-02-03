@@ -38,9 +38,14 @@ class _FavoriteWidgetState extends State<FavoriteWidget>{
           icon: _isFavorited ? Icon(Icons.favorite) : Icon(Icons.favorite_border),
           color: Colors.red,
           onPressed: _toggleFavorite,
+          iconSize: 35,
         ),
 
-        Text('$_favoriteCount'),
+        Text('$_favoriteCount',
+            style: TextStyle(
+            fontSize: 35,
+          ),
+        ),
       ],
     );
   }
