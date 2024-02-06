@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
         ),
         home: ChangeNotifierProvider<MQTTAppState>(
           create: (_) => MQTTAppState(),
-          child: MQTTView(),
+          child: const MQTTView(),
         ));
   }
 }

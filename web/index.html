@@ -40,6 +40,24 @@
   <script src="flutter.js" defer></script>
 </head>
 <body>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.3/firebase-app.js";
+    // Import the functions you need from the SDKs you need
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyA0Ge8DnZ8kQaJJR7yHcDQQWtvQEvuE6vc",
+      authDomain: "trusteval-f7211.firebaseapp.com",
+      projectId: "trusteval-f7211",
+      storageBucket: "trusteval-f7211.appspot.com",
+      messagingSenderId: "911454630258",
+      appId: "1:911454630258:web:aa43ba82aa024660b52deb"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+  </script>
   <script>
     window.addEventListener('load', function(ev) {
       // Download main.dart.js
