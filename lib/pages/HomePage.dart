@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:on_essaie_encore/objets/Event.dart';
 import 'SousPages/descriptionEvent.dart';
+import 'dart:convert';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key,});
@@ -11,54 +13,54 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  final List<Event> events = [
-    Event(  "Adrien",
-        "Incendie",
-        "azera azerkjnldv a zle kazemlr,azef,kazmkle amzler,alerazerazeraze adhufazerba"
-            "uzerbyzeu"
-            "azerahzerbhab kazerjkazenranz erakjzernazerkjz nkazerjkazebr "
-            "azer,knazkjernjakze fazkler,naezklrklazenr "
-            "azkje jrajkzerjakzenrkzejr",
-        51.50,
-        51.2,
-        "22 fevrier",
-        false,
-        22),
-    Event(  "Loic",
-        "Incendie",
-        "l'ecole à pris feu",
-        51.4,
-        51.3,
-        "22 fevrier",
-        false,
-        78)
-
-  ];
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: ListView.builder(
-          itemCount: events.length,
-          itemBuilder: (context, index){
-            return  GestureDetector(
-              child: Card(
-                child: ListTile(
-                  leading: FlutterLogo(size: 56.0),
-                  title:  Text(events[index].type),
-                  subtitle: Text(events[index].auteur),
-                  trailing:  Icon(Icons.more_vert),
-                ),
-              ),
-              onTap: (){
-                Navigator.push(
-                    context, MaterialPageRoute(
-                  builder: (context)=> descriptionEvent( event: events[index]
-                  ),
-                ));
+      child: StreamBuilder(
+        stream: FirebaseFirestore.instance.collection("Events").snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
+          if(snapshot.connectionState == ConnectionState.waiting){
+            return CircularProgressIndicator();
+          }
+
+          if(!snapshot.hasData){
+            return Text("Aucun evenement disponible");
+          }
+
+          List<dynamic> events = [];
+          snapshot.data!.docs.forEach((element) {
+            events.add(element);
+          });
+
+            return ListView.builder(
+              itemCount: events.length,
+              itemBuilder: (context, index){
+                final event = events[index];
+                final type = event['type'];
+                final nom = event['nom'];
+
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context, MaterialPageRoute(
+                        builder: (context)=> descriptionEvent( event: event
+                    ),
+                    ));
+                  },
+                    child:Card(
+                            child: ListTile(
+                                 leading: FlutterLogo(size: 56.0),
+                                title:  Text(type),
+                                subtitle: Text(nom),
+                                trailing:  Icon(Icons.more_vert),
+                )
+                )
+                );
               },
+
             );
-          },
-        )
+        }
+      ),
     );
   }
 }

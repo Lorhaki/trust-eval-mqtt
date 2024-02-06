@@ -35,7 +35,7 @@ class _MyAuthState extends State<MyAuth>{
                   decoration: InputDecoration(hintText: "Password"),
                 ),
                 ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if(emailController.text.isNotEmpty && passwordController.text.isNotEmpty && passwordController.text.length > 6){
                         login();
                       }
@@ -49,6 +49,7 @@ class _MyAuthState extends State<MyAuth>{
                         email: emailController.text,
                         password: passwordController.text
                     );
+
                   },
                   child: const Text("Inscription"),
                 ),

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'boutonLike.dart';
 import 'package:on_essaie_encore/objets/Event.dart';
+
+
 class descriptionEvent extends StatelessWidget {
   const descriptionEvent({super.key, required this.event});
-  final Event event;
+  final dynamic event;
 
   @override
   Widget build(BuildContext context) {
@@ -21,26 +23,26 @@ class descriptionEvent extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                          this.event.type,
+                          this.event['type'],
                           style: TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
                           ),
                       ),
                       Text(
-                           this.event.auteur,
+                           this.event['utilisateur'],
                             style: TextStyle(
                             fontSize: 20,
                             fontStyle: FontStyle.italic,
                           ),
                       ),
                       Text(
-                           this.event.description + "\n"
+                           this.event['description'] + "\n"
                           ""),
 
-                      Text( "Latitude : " + this.event.localisationX.toString() + " Longitude : " + this.event.localisationY.toString() + "\n"
-                              ),
-                      FavoriteWidget(isFavorited : event.isFavorite , favoriteCount: event.FavouriteCount)
+                      /*Text( "Latitude : " + this.event.toString() + " Longitude : " + this.event.localisationY.toString() + "\n"
+                              ),*/
+                      FavoriteWidget(isFavorited : /*event.isFavorite*/ false , favoriteCount: /*event.FavouriteCount*/ 0)
                     ],
                   )
               ),
