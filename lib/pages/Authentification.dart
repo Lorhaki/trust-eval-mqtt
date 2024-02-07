@@ -63,6 +63,7 @@ class _MyAuthState extends State<MyAuth>{
 
   Future<void> login() async{
       final auth = FirebaseAuth.instance;
+     // print(auth.currentUser!.uid + "azeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
       auth.signInWithEmailAndPassword(
           email: emailController.text, password: passwordController.text);
 
