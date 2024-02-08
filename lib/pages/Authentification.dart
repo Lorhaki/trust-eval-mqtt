@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -43,14 +44,20 @@ class _MyAuthState extends State<MyAuth>{
                     child: const Text("Connexion"),
                 ),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     final auth = FirebaseAuth.instance;
                     auth.createUserWithEmailAndPassword(
                         email: emailController.text,
                         password: passwordController.text
                     );
-
-                  },
+                      await Future.delayed(const Duration(seconds: 2));
+                      CollectionReference user =  FirebaseFirestore.instance.collection("Users");
+                      user.add({
+                        "mail" : emailController.text,
+                        "uid" : FirebaseAuth.instance.currentUser!.uid.characters.string,
+                        "confiance" : 50
+                      });
+                    },
                   child: const Text("Inscription"),
                 ),
               ],
@@ -66,6 +73,5 @@ class _MyAuthState extends State<MyAuth>{
      // print(auth.currentUser!.uid + "azeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
       auth.signInWithEmailAndPassword(
           email: emailController.text, password: passwordController.text);
-
   }
 }
