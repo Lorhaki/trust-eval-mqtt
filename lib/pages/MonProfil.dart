@@ -28,10 +28,54 @@ class _MyProfileState extends State<MyProfile> {
                    shrinkWrap: true,
                    itemBuilder: (context,i){
                      var data = snapshot.data!.docs[i];
-                     return UserAccountsDrawerHeader(
-                         accountName: Text(data['pseudo']),
-                         accountEmail: Text(data['confiance'].toString()));
-                   },
+                     String pseudo = data['pseudo'];
+                     String email = data['mail'];
+                     String confiance = data['confiance'].toString();
+                     String participation = data['participation'].toString();
+                     String nbEvent = data['nbevents'].toString();
+                     return Padding(
+                       padding:  EdgeInsets.all(20),
+                       child: Column(
+                         children: [
+                           SizedBox(height: 40),
+                           CircleAvatar(
+                             radius: 50,
+                             backgroundColor: Colors.blue,
+                           ),
+                              Card(
+                                 child: ListTile(
+                                 leading: Icon(Icons.person),
+                                 title:  Text("Pseudo: " + pseudo),
+                                 ),
+                              ),
+                           Card(
+                             child: ListTile(
+                               leading: Icon(Icons.mail),
+                               title:  Text("Email: " + email),
+                             ),
+                           ),
+                           Card(
+                             child: ListTile(
+                               leading: Icon(Icons.favorite),
+                               title:  Text("Confiance: " + confiance+ "%"),
+                             ),
+                           ),
+                           Card(
+                             child: ListTile(
+                               leading: Icon(Icons.handshake),
+                               title:  Text("Participation: " + participation),
+                             ),
+                           ),
+                           Card(
+                             child: ListTile(
+                               leading: Icon(Icons.flag),
+                               title:  Text("Nombre event créés: " + nbEvent ),
+                             ),
+                           ),
+                         ],
+                       ),
+                     );
+                     },
                  );
                   // var data = snapshot.data!.docs;
                 } else{ return Text("Il n'y a pas de données pour cet utilisateur , celui à mal été instancié ERROR");

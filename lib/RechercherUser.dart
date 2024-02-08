@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:on_essaie_encore/objets/User.dart';
 import 'package:on_essaie_encore/pages/SousPages/descriptionUser.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RechercherUser extends StatefulWidget {
   const RechercherUser({super.key,});
@@ -12,34 +12,54 @@ class RechercherUser extends StatefulWidget {
 
 class _RechercheUserState extends State<RechercherUser> {
 
-  final List<User> users = [
-      User("Adrien", 50.1, 45.0, 100)
-  ];
 
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: ListView.builder(
+        child: StreamBuilder(
+        stream: FirebaseFirestore.instance.collection("Users").snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
+              if(snapshot.connectionState == ConnectionState.waiting){
+              return CircularProgressIndicator();
+              }
+              if(!snapshot.hasData){
+              return Text("Aucun utilisateur disponible");
+              }
+
+              List<dynamic> users = [];
+              snapshot.data!.docs.forEach((element) {
+              users.add(element);
+              });
+
+          return ListView.builder(
           itemCount: users.length,
           itemBuilder: (context, index){
-            return  GestureDetector(
-              child: Card(
-                child: ListTile(
-                  leading: FlutterLogo(size: 56.0),
+            final user = users[index];
+            final pseudo = user['pseudo'];
+            final email = user['mail'];
 
-                  trailing:  Icon(Icons.more_vert),
-                ),
-              ),
-              onTap: (){
-                Navigator.push(
-                    context, MaterialPageRoute(
-                  builder: (context)=> descriptionUser( user: users[index]
-                  ),
-                ));
-              },
+            return InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context, MaterialPageRoute(
+                    builder: (context)=> descriptionUser( user: user
+                    ),
+                  ));
+                },
+                child:Card(
+                    child: ListTile(
+                      leading: FlutterLogo(size: 56.0),
+                      title:  Text(pseudo),
+                      subtitle: Text(email),
+                      trailing:  Icon(Icons.more_vert),
+                    )
+                )
             );
           },
-        )
+
+          );
+        }
+        ),
     );
   }
 }
