@@ -18,22 +18,22 @@ class _MyAuthState extends State<MyAuth>{
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red,
-        title: Text("Page de connexion") ,
+        title: const Text("Page de connexion") ,
       ),
       body:  Center(
         child: Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           child: Form(
             child: Column(
               children: [
                 TextFormField(
                   controller: emailController,
-                  decoration: InputDecoration(hintText: "Email"),
+                  decoration: const InputDecoration(hintText: "Email"),
                 ),
                 TextFormField(
                   controller: passwordController,
                   obscureText: true,
-                  decoration: InputDecoration(hintText: "Password"),
+                  decoration: const InputDecoration(hintText: "Password"),
                 ),
                 ElevatedButton(
                     onPressed: () async {

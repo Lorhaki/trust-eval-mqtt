@@ -18,17 +18,17 @@ class _MyMarkerMap extends State<Mymap> {
         stream: FirebaseFirestore.instance.collection("Events").snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           }
 
           if (!snapshot.hasData) {
-            return Text("Aucun evenement disponible");
+            return const Text("Aucun evenement disponible");
           }
 
           List<dynamic> events = [];
-          snapshot.data!.docs.forEach((element) {
+          for (var element in snapshot.data!.docs) {
             events.add(element);
-          });
+          }
 
           return FlutterMap(
             options: MapOptions(
@@ -43,8 +43,8 @@ class _MyMarkerMap extends State<Mymap> {
               ),
               MarkerLayer(
                 markers: events.map((event) {
-                  final latitude = double.parse(event['localisationX']!);
-                  final longitude = double.parse(event['localisationY']!);
+                  final latitude = event['localisationX']!;
+                  final longitude = event['localisationY']!;
 
                   return Marker(
                     width: 45.0,

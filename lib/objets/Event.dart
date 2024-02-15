@@ -1,9 +1,5 @@
-import "dart:convert";
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 
 // Importez votre classe Event ici
-import 'event.dart';
 class Event {
   String auteur;
   String type;
@@ -23,7 +19,14 @@ class Event {
 
   factory Event.fromJson(Map<String, dynamic> json)
     {
-      return Event(json["auteur"], json["type"], json["description"], json["localisationX"], json["localisationY"], json["dateCreation"], json["isFavorite"], json["FavouriteCount"]);
+      return Event(json["auteur"],
+          json["type"],
+          json["description"],
+          json["localisationX"],
+          json["localisationY"],
+          json["dateCreation"],
+          json["isFavorite"],
+          json["FavouriteCount"]);
     }
 
 

@@ -7,7 +7,8 @@ class FavoriteWidget extends StatefulWidget{
   const FavoriteWidget({super.key, required this.isFavorited, required this.favoriteCount});
 
 
-  _FavoriteWidgetState createState() => _FavoriteWidgetState(this.isFavorited, this.favoriteCount);
+  @override
+  _FavoriteWidgetState createState() => _FavoriteWidgetState(isFavorited, favoriteCount);
 }
 
 class _FavoriteWidgetState extends State<FavoriteWidget>{
@@ -35,14 +36,14 @@ class _FavoriteWidgetState extends State<FavoriteWidget>{
     return Row(
       children: [
         IconButton(
-          icon: _isFavorited ? Icon(Icons.favorite) : Icon(Icons.favorite_border),
+          icon: _isFavorited ? const Icon(Icons.favorite) : const Icon(Icons.favorite_border),
           color: Colors.red,
           onPressed: _toggleFavorite,
           iconSize: 35,
         ),
 
         Text('$_favoriteCount',
-            style: TextStyle(
+            style: const TextStyle(
             fontSize: 35,
           ),
         ),

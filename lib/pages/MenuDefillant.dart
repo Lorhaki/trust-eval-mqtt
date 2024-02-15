@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:on_essaie_encore/pages/AjoutEvent.dart';
-import 'package:on_essaie_encore/pages/Authentification.dart';
+import 'package:trust_eval/pages/AjoutEvent.dart';
 import 'MonProfil.dart';
 import 'HomePage.dart';
-import 'package:on_essaie_encore/map.dart';
-import 'package:on_essaie_encore/RechercherUser.dart';
+import 'package:trust_eval/map.dart';
+import 'package:trust_eval/RechercherUser.dart';
 
 class MyMenu extends StatefulWidget {
   const MyMenu({super.key});

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'boutonLike.dart';
-import 'package:on_essaie_encore/objets/Event.dart';
 
 
 class descriptionEvent extends StatelessWidget {
@@ -17,36 +16,36 @@ class descriptionEvent extends StatelessWidget {
         body: Center(
           child: Row(
             children: [
-              SizedBox(width: 10), // Marge gauche
+              const SizedBox(width: 10), // Marge gauche
               Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                          this.event['type'],
-                          style: TextStyle(
+                          event['type'],
+                          style: const TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
                           ),
                       ),
                       Text(
-                           this.event['utilisateur'],
-                            style: TextStyle(
+                           event['utilisateur'],
+                            style: const TextStyle(
                             fontSize: 20,
                             fontStyle: FontStyle.italic,
                           ),
                       ),
                       Text(
-                           this.event['description'] + "\n"
+                           event['description'] + "\n"
                           ""),
 
                       /*Text( "Latitude : " + this.event.toString() + " Longitude : " + this.event.localisationY.toString() + "\n"
                               ),*/
-                      FavoriteWidget(isFavorited : /*event.isFavorite*/ false , favoriteCount: /*event.FavouriteCount*/ 0)
+                      const FavoriteWidget(isFavorited : /*event.isFavorite*/ false , favoriteCount: /*event.FavouriteCount*/ 0)
                     ],
                   )
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
             ],
           ),
         )

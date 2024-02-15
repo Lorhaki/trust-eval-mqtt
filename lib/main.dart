@@ -1,13 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:on_essaie_encore/pages/AjoutEvent.dart';
-import 'package:on_essaie_encore/pages/Authentification.dart';
-import 'pages/MonProfil.dart';
-import 'pages/HomePage.dart';
+import 'package:trust_eval/pages/Authentification.dart';
 import 'pages/MenuDefillant.dart';
-import 'pages/Authentification.dart';
-import 'map.dart';
-import 'RechercherUser.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 

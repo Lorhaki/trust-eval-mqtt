@@ -1,4 +1,4 @@
-name: on_essaie_encore
+name: trust_eval
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -19,8 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.2.5 <4.0.0'
-
+  sdk: '3.2.5'
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
 # consider running `flutter pub upgrade --major-versions`. Alternatively,
@@ -40,6 +39,10 @@ dependencies:
   cloud_firestore: ^4.15.0
   firebase_auth: ^4.17.3
   firebase_database: ^10.4.5
+  geolocator: 11.0.0
+  google_maps_flutter: ^2.0.0
+  latlng: any
+
 
 
 dev_dependencies:
