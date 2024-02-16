@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'boutonLike.dart';
-
+import 'boutonDislike.dart';
 
 class descriptionEvent extends StatelessWidget {
   const descriptionEvent({super.key, required this.event});
@@ -41,7 +41,13 @@ class descriptionEvent extends StatelessWidget {
 
                       /*Text( "Latitude : " + this.event.toString() + " Longitude : " + this.event.localisationY.toString() + "\n"
                               ),*/
-                      const FavoriteWidget(isFavorited : /*event.isFavorite*/ false , favoriteCount: /*event.FavouriteCount*/ 0)
+                      Row(
+                        children: [
+                          const FavoriteWidget(isFavorited : /*event.isFavorite*/ false , favoriteCount: /*event.FavouriteCount*/ 0),
+                          const DislikeWidget(isDisliked: false /*event.isDislike*/, dislikeCount: 0 /*event.DislikeCountCount*/),
+                        ],
+                      )
+
                     ],
                   )
               ),

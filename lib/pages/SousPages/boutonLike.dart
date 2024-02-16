@@ -36,8 +36,8 @@ class _FavoriteWidgetState extends State<FavoriteWidget>{
     return Row(
       children: [
         IconButton(
-          icon: _isFavorited ? const Icon(Icons.favorite) : const Icon(Icons.favorite_border),
-          color: Colors.red,
+          icon: _isFavorited ? const Icon(Icons.thumb_up) : const Icon(Icons.thumb_up),
+          color: Colors.blue,
           onPressed: _toggleFavorite,
           iconSize: 35,
         ),

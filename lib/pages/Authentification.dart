@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'Inscription.dart';
 
 class MyAuth extends StatefulWidget {
   const MyAuth({super.key});
@@ -43,9 +44,14 @@ class _MyAuthState extends State<MyAuth>{
                     },
                     child: const Text("Connexion"),
                 ),
+
                 ElevatedButton(
                   onPressed: () async {
-                    final auth = FirebaseAuth.instance;
+                    Navigator.push(
+                    context, MaterialPageRoute(
+                    builder: (context)=> MyInsc()
+                    ),
+                    /*final auth = FirebaseAuth.instance;
                     auth.createUserWithEmailAndPassword(
                         email: emailController.text,
                         password: passwordController.text
@@ -56,7 +62,7 @@ class _MyAuthState extends State<MyAuth>{
                         "mail" : emailController.text,
                         "uid" : FirebaseAuth.instance.currentUser!.uid.characters.string,
                         "confiance" : 50
-                      });
+                      */);
                     },
                   child: const Text("Inscription"),
                 ),

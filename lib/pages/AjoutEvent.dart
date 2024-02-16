@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -55,9 +57,12 @@ class _AjoutEventState extends State<AjoutEvent> {
   final _formkey = GlobalKey<FormState>();
 
   final eventController = TextEditingController();
+  final descriptionController = TextEditingController();
   String duree = '10';
   String type  = 'retard';
   String nom = 'Par defaut';
+  String description = 'Par defaut';
+  num perimetre = 5;
 
   @override
   Widget build(BuildContext context) {
@@ -92,6 +97,28 @@ class _AjoutEventState extends State<AjoutEvent> {
                   ),
                   Container(
                     margin: const EdgeInsets.only(bottom: 10),
+                    child: TextFormField(
+                      decoration: const InputDecoration(
+                          labelText: 'Description',
+                          hintText: 'Exemple de description',
+                          border: OutlineInputBorder()
+                      ),
+                      validator: (value){
+                        if(value == null || value.isEmpty)
+                        {
+                          return "Nom incompatible";
+                        }
+                        else
+                        {
+                          description = value;
+                        }
+                        return null;
+                      },
+                      controller: descriptionController,
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 10),
                     child: DropdownButtonFormField(
                         items: const[
                           DropdownMenuItem(value: '60', child: Text("1h")),
@@ -106,6 +133,27 @@ class _AjoutEventState extends State<AjoutEvent> {
                         onChanged: (value){
                           setState(() {
                             duree = value!;
+                          });
+                        }
+                    ),
+                  ),
+
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 10),
+                    child: DropdownButtonFormField(
+                        items: const[
+                          DropdownMenuItem(value: 15, child: Text("15 km")),
+                          DropdownMenuItem(value: 10, child: Text("10 km")),
+                          DropdownMenuItem(value: 5, child: Text("5 km"))
+                        ],
+                        decoration: const InputDecoration(
+                            labelText: 'distance',
+                            border: OutlineInputBorder()
+                        ),
+                        value: perimetre,
+                        onChanged: (value){
+                          setState(() {
+                            perimetre = value!;
                           });
                         }
                     ),
@@ -158,10 +206,11 @@ class _AjoutEventState extends State<AjoutEvent> {
                                 "nom" : nom,
                                 "localisationX": position.latitude,
                                 "localisationY": position.longitude,
-                                "participation": 0
+                                "participation": 0,
+                                "perimetre":perimetre,
+                                "description": description,
                               });
                             }
-
                           },
                           child: const Text("Envoyer")
                       )
