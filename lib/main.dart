@@ -1,11 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:trust_eval/pages/Authentification.dart';
+import 'objets/Utilisateur.dart';
 import 'pages/MenuDefillant.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
-
+Utilisateur userActu = Utilisateur(50, "", "", 0, 0, "");
+int idUser = 0;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

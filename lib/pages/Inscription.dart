@@ -1,6 +1,15 @@
+import 'dart:convert';
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mqtt_client/mqtt_client.dart';
+import 'package:mqtt_client/mqtt_server_client.dart';
+import 'package:trust_eval/main.dart';
+import 'package:trust_eval/pages/Authentification.dart';
+
+import '../objets/Utilisateur.dart';
 
 class MyInsc extends StatefulWidget {
   const MyInsc({super.key});
@@ -44,6 +53,29 @@ class _MyAuthState extends State<MyInsc>{
                 ElevatedButton(
                   onPressed: () async {
                         //Implementer le systéme d'inscription avec Mosquitto ICI !!
+                    final mqttClient = MqttServerClient.withPort('172.24.16.1','zertyuio', 1883);
+                    print(mqttClient.port);
+                    // Connecter le client
+                    await mqttClient.connect();
+                    mqttClient.subscribe('creationReussie/${pseudoController.text}',MqttQos.atLeastOnce);
+                    print('creationReussie/${pseudoController.text}');
+                    mqttClient.updates?.listen((List<MqttReceivedMessage<MqttMessage?>>? c) {
+                      final recMess = c![0].payload as MqttPublishMessage;
+                      final pt = MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
+                      final jsonString = pt;
+                      idUser = int.parse(pt.toString());
+                      print('Received message: topic is ${c[0].topic}, payload is $pt');
+                      Navigator.push(
+                          context, MaterialPageRoute(
+                          builder: (context)=> MyAuth()
+                      ));
+                    });
+                    String mess = 'Hello, MQTT!';
+                    final builder = MqttClientPayloadBuilder();
+                    Utilisateur user = Utilisateur(50, emailController.text, passwordController.text, 0, 0, pseudoController.text);
+                    builder.addString(jsonEncode(user));
+                    // Publier un message
+                    mqttClient.publishMessage('users/add/${pseudoController.text}', MqttQos.atLeastOnce,builder.payload! );
                   },
                   child: const Text("Valider"),
                 ),
@@ -61,4 +93,6 @@ class _MyAuthState extends State<MyInsc>{
     auth.signInWithEmailAndPassword(
         email: emailController.text, password: passwordController.text);
   }
+
+
 }
