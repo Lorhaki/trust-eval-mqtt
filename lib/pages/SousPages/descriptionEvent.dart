@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'boutonLike.dart';
 import 'boutonDislike.dart';
+import '../../objets/Event.dart';
 
 class descriptionEvent extends StatelessWidget {
-  const descriptionEvent({super.key, required this.event});
-  final dynamic event;
+  final Event event;
+  const descriptionEvent(this.event, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,29 +23,28 @@ class descriptionEvent extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                          event['type'],
+                          event.type,
                           style: const TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
                           ),
                       ),
                       Text(
-                           event['utilisateur'],
+                           event.pseudoUser,
                             style: const TextStyle(
                             fontSize: 20,
                             fontStyle: FontStyle.italic,
                           ),
                       ),
                       Text(
-                           event['description'] + "\n"
-                          ""),
+                           "${event.description}\n"),
 
                       /*Text( "Latitude : " + this.event.toString() + " Longitude : " + this.event.localisationY.toString() + "\n"
                               ),*/
-                      Row(
+                      const Row(
                         children: [
-                          const FavoriteWidget(isFavorited : /*event.isFavorite*/ false , favoriteCount: /*event.FavouriteCount*/ 0),
-                          const DislikeWidget(isDisliked: false /*event.isDislike*/, dislikeCount: 0 /*event.DislikeCountCount*/),
+                          FavoriteWidget(isFavorited : /*event.isFavorite*/ false , favoriteCount: /*event.FavouriteCount*/ 0),
+                          DislikeWidget(isDisliked: false /*event.isDislike*/, dislikeCount: 0 /*event.DislikeCountCount*/),
                         ],
                       )
 

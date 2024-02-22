@@ -203,7 +203,6 @@ class _AjoutEventState extends State<AjoutEvent> {
                               mqttClient.updates?.listen((List<MqttReceivedMessage<MqttMessage?>>? c) {
                                 final recMess = c![0].payload as MqttPublishMessage;
                                 final pt = MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
-                                idUser = int.parse(pt.toString());
                                 print('Received message: topic is ${c[0].topic}, event a été créer');
                                 eventController.text = "";
                                 descriptionController.text="";

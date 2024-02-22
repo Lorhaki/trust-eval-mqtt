@@ -7,26 +7,28 @@ class Event {
   double longitude;
   double latitude;
   String dateCreation;
-  bool isFavorite;
-  int FavouriteCount;
+  String duree;
+  int perimetre;
+  String pseudoUser;
 
 
 
   Event(this.auteur,this.type,this.description,
-      this.longitude,this.latitude, this.dateCreation, this.isFavorite,
-      this.FavouriteCount);
+      this.longitude,this.latitude, this.dateCreation,
+      this.duree, this.perimetre, this.pseudoUser);
 
 
   factory Event.fromJson(Map<String, dynamic> json)
     {
-      return Event(json["auteur"],
+      return Event(json["idUser"],
           json["type"],
           json["description"],
           json["longitude"],
           json["latitude"],
-          json["dateCreation"],
-          json["isFavorite"],
-          json["FavouriteCount"]);
+          json["heureDebut"],
+      json["duree"],
+      json["perimetre"],
+      json["pseudoUser"]);
     }
 
 
