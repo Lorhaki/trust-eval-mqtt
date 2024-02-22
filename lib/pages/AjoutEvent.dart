@@ -1,8 +1,17 @@
 
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mqtt_client/mqtt_client.dart';
+import 'package:mqtt_client/mqtt_server_client.dart';
+
+import '../main.dart';
+import '../objets/Utilisateur.dart';
+import 'Authentification.dart';
+import '../objets/dto/CreationEvent.dart';
 
 /// Determine the current position of the device.
 ///
@@ -61,7 +70,7 @@ class _AjoutEventState extends State<AjoutEvent> {
   String type  = 'retard';
   String nom = 'Par defaut';
   String description = 'Par defaut';
-  num perimetre = 5;
+  int perimetre = 5;
 
   @override
   Widget build(BuildContext context) {
@@ -185,30 +194,25 @@ class _AjoutEventState extends State<AjoutEvent> {
                           async {
                             if(_formkey.currentState!.validate())
                             {
-                              final nom = eventController.text;
-
-                              //print("ajout de $nom de $duree");
-                              /*
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text("Envoi en cours..."))
-                                  );
-                                  FocusScope.of(context).requestFocus(FocusNode());
-                                 */
-                              CollectionReference eventsRef =  FirebaseFirestore.instance.collection("Events");
                               Position position =  await _determinePosition();
-                              LatLng loc = LatLng(position.latitude, position.longitude);
-                              eventsRef.add({
-                                "confiance" : 50,
-                                "duree" : int.parse(duree),
-                                "type" : type,
-                                "utilisateur" : "Adrien",
-                                "nom" : nom,
-                                "localisationX": position.latitude,
-                                "localisationY": position.longitude,
-                                "participation": 0,
-                                "perimetre":perimetre,
-                                "description": description,
+                              //LatLng loc = LatLng(position.latitude, position.longitude);
+                              final mqttClient = MqttServerClient.withPort(ipServeur,'zertyuio', 1883);
+                              // Connecter le client
+                              await mqttClient.connect();
+                              mqttClient.subscribe('eventCreer/${idUser}',MqttQos.atLeastOnce);
+                              mqttClient.updates?.listen((List<MqttReceivedMessage<MqttMessage?>>? c) {
+                                final recMess = c![0].payload as MqttPublishMessage;
+                                final pt = MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
+                                idUser = int.parse(pt.toString());
+                                print('Received message: topic is ${c[0].topic}, event a été créer');
+                                eventController.text = "";
+                                descriptionController.text="";
                               });
+                              final builder = MqttClientPayloadBuilder();
+                              CreationEvent event = CreationEvent(idUser, type, description, position.longitude, position.latitude, int.parse(duree), perimetre);
+                              builder.addString(jsonEncode(event));
+                              // Publier un message
+                              mqttClient.publishMessage('events/add/${idUser}', MqttQos.atLeastOnce,builder.payload! );
                             }
                           },
                           child: const Text("Envoyer")

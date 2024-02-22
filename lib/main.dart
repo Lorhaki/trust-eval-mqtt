@@ -8,6 +8,7 @@ import 'firebase_options.dart';
 
 Utilisateur userActu = Utilisateur(50, "", "", 0, 0, "");
 int idUser = 0;
+String ipServeur = '172.24.16.1';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

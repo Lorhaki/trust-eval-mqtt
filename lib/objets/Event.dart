@@ -1,19 +1,19 @@
 
 // Importez votre classe Event ici
 class Event {
-  String auteur;
+  int auteur;
   String type;
   String description;
-  double localisationX;
-  double localisationY;
+  double longitude;
+  double latitude;
   String dateCreation;
-
   bool isFavorite;
   int FavouriteCount;
 
 
+
   Event(this.auteur,this.type,this.description,
-      this.localisationX,this.localisationY, this.dateCreation, this.isFavorite,
+      this.longitude,this.latitude, this.dateCreation, this.isFavorite,
       this.FavouriteCount);
 
 
@@ -22,8 +22,8 @@ class Event {
       return Event(json["auteur"],
           json["type"],
           json["description"],
-          json["localisationX"],
-          json["localisationY"],
+          json["longitude"],
+          json["latitude"],
           json["dateCreation"],
           json["isFavorite"],
           json["FavouriteCount"]);
