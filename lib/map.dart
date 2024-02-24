@@ -1,9 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map/plugin_api.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:mqtt_client/mqtt_client.dart';
 import 'package:trust_eval/main.dart';
+import 'package:trust_eval/pages/SousPages/descriptionEvent.dart';
+
+import 'objets/Event.dart';
 
 LatLng loc = LatLng(50.326085, 3.514633);
 
@@ -54,13 +60,7 @@ class Mymap extends StatefulWidget {
 class _MyMarkerMap extends State<Mymap> {
   @override
   Widget build(BuildContext context) {
-    List<Map<String, dynamic>> events = [
-      // Vos événements avec les attributs nom, latitude, longitude et paramètre
-      {'nom': 'Event 1', 'latitude': 50.326085, 'longitude': 3.514633, 'perimetre': 2},
-      {'nom': 'Event 2', 'latitude': 50.336085, 'longitude': 3.524633, 'perimetre': 3},
-      {'nom': 'Event 3', 'latitude': 50.346085, 'longitude': 3.534633, 'perimetre': 4},
-    ];
-
+    getEvents();
     return Stack(
       children: [
         FlutterMap(
@@ -103,7 +103,14 @@ class _MyMarkerMap extends State<Mymap> {
                     child: IconButton(
                       icon: const Icon(Icons.location_on),
                       color: Colors.red,
-                      onPressed: () => {}, // Add placeholder function
+                      onPressed: () => {
+                        Navigator.push(
+                          context, MaterialPageRoute(
+                            builder: (context) =>
+                              descriptionEvent(event: event),
+                        )),
+
+                      }, // Add placeholder function
                     ),
                   ),
                 );
@@ -126,5 +133,37 @@ class _MyMarkerMap extends State<Mymap> {
         ),
       ],
     );
+  }
+
+  Future<void> getEvents() async {
+    // Connecter le client
+    await mqttClient.connect();
+    mqttClient.subscribe('getEvents', MqttQos.atLeastOnce);
+    mqttClient.updates?.listen((List<MqttReceivedMessage<MqttMessage?>>? c) {
+      final recMess = c![0].payload as MqttPublishMessage;
+      final pt = MqttPublishPayload.bytesToStringAsString(
+          recMess.payload.message);
+      final jsonString = pt;
+      print('Received message: topic is ${c[0].topic}, payload is $pt');
+      List<dynamic> jsonData = jsonDecode(jsonString);
+      if(mounted)
+      {
+        setState(() {
+          listeEvents = jsonData.map((json) => Event.fromJson(json)).toList();
+        });
+      }
+
+    });
+    final builder = MqttClientPayloadBuilder();
+
+    // Publier un message
+    if(chPage)
+    {
+      print("send message events/all");
+      chPage = false;
+      mqttClient.publishMessage(
+          'events/all', MqttQos.atLeastOnce, builder.payload!);
+    }
+
   }
 }

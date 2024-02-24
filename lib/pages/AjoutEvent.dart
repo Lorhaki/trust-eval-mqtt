@@ -205,12 +205,14 @@ class _AjoutEventState extends State<AjoutEvent> {
                                 final recMess = c![0].payload as MqttPublishMessage;
                                 final pt = MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
                                 print('Received message: topic is ${c[0].topic}, event a été créer');
+                                const snackBar = SnackBar(
+                                  content: Text('evenement a ete cree'),
+                                  duration: Duration(seconds: 2), // Durée du message
+                                );
                                 eventController.text = "";
                                 descriptionController.text="";
-                                Navigator.push(
-                                    context, MaterialPageRoute(
-                                    builder: (context)=> MyMenu()
-                                ));
+                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                print("connexion echouee");
                               });
                               final builder = MqttClientPayloadBuilder();
                               CreationEvent event = CreationEvent(idUser, type, description, position.longitude, position.latitude, int.parse(duree), perimetre);

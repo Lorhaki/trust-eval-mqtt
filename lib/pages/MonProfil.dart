@@ -37,10 +37,10 @@ class _MyProfileState extends State<MyProfile> {
     String mess = idUser.toString();
     final builder = MqttClientPayloadBuilder();
     builder.addString(mess);
-
-    // Publier un message
-    mqttClient.publishMessage('users/get', MqttQos.atLeastOnce,builder.payload! );
-    //throw UnimplementedError();
+    if(chPage)
+      {
+        mqttClient.publishMessage('users/get', MqttQos.atLeastOnce,builder.payload! );
+      }
   }
 
   @override

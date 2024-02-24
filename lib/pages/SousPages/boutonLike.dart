@@ -1,34 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:mqtt_client/mqtt_client.dart';
+import 'package:trust_eval/main.dart';
 
-class FavoriteWidget extends StatefulWidget{
+class FavoriteWidget extends StatefulWidget {
   final bool isFavorited;
   final int favoriteCount;
+  final String eventId;
 
-  const FavoriteWidget({super.key, required this.isFavorited, required this.favoriteCount});
-
+  const FavoriteWidget({Key? key, required this.isFavorited, required this.favoriteCount, required this.eventId}) : super(key: key);
 
   @override
-  _FavoriteWidgetState createState() => _FavoriteWidgetState(isFavorited, favoriteCount);
+  _FavoriteWidgetState createState() => _FavoriteWidgetState(isFavorited, favoriteCount, eventId);
 }
 
-class _FavoriteWidgetState extends State<FavoriteWidget>{
-  bool _isFavorited ;
+class _FavoriteWidgetState extends State<FavoriteWidget> {
+  bool _isFavorited;
   int _favoriteCount;
+  final String _eventId;
 
-  _FavoriteWidgetState(this._isFavorited, this._favoriteCount);
+  _FavoriteWidgetState(this._isFavorited, this._favoriteCount, this._eventId);
 
-
-
-  void _toggleFavorite(){
-    setState(() {
-      if(_isFavorited){
+  Future<void> _toggleFavorite() async {
+    if (_isFavorited) {
+      setState(() {
         _isFavorited = false;
         _favoriteCount -= 1;
-      }else{
+      });
+    } else {
+      await mqttClient.connect();
+      final builder = MqttClientPayloadBuilder();
+      mqttClient.publishMessage('events/vrai/$_eventId', MqttQos.atLeastOnce, builder.payload!);
+      setState(() {
         _isFavorited = true;
-        _favoriteCount += 1 ;
-      }
-    });
+        _favoriteCount += 1;
+      });
+    }
   }
 
   @override
@@ -41,9 +47,9 @@ class _FavoriteWidgetState extends State<FavoriteWidget>{
           onPressed: _toggleFavorite,
           iconSize: 35,
         ),
-
-        Text('$_favoriteCount',
-            style: const TextStyle(
+        Text(
+          '$_favoriteCount',
+          style: const TextStyle(
             fontSize: 35,
           ),
         ),
