@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:trust_eval/objets/Utilisateur.dart';
+import 'package:trust_eval/main.dart';
 
 class descriptionUser extends StatelessWidget {
   const descriptionUser({super.key, required this.user});
-  final dynamic user;
+  final Utilisateur user;
 
   @override
   Widget build(BuildContext context) {
+    chPage = true;
     return Scaffold(
 
         appBar: AppBar(
@@ -25,31 +28,31 @@ class descriptionUser extends StatelessWidget {
                 Card(
                   child: ListTile(
                     leading: const Icon(Icons.person),
-                    title:  Text("Pseudo: " + user['pseudo']),
+                    title:  Text("Pseudo: " + user.pseudo),
                   ),
                 ),
                 Card(
                   child: ListTile(
                     leading: const Icon(Icons.mail),
-                    title:  Text("Email: " + user['mail']),
+                    title:  Text("Email: " + user.email),
                   ),
                 ),
                 Card(
                   child: ListTile(
                     leading: const Icon(Icons.favorite),
-                    title:  Text("Confiance: ${user['confiance']}%"),
+                    title:  Text("Confiance: ${user.scoreConfiance}%"),
                   ),
                 ),
                 Card(
                   child: ListTile(
                     leading: const Icon(Icons.handshake),
-                    title:  Text("Participation: ${user['participation']}"),
+                    title:  Text("Participation: ${user.participation}"),
                   ),
                 ),
                 Card(
                   child: ListTile(
                     leading: const Icon(Icons.flag),
-                    title:  Text("Nombre event créés: ${user['nbevents']}" ),
+                    title:  Text("Nombre event créés: ${user.nbEvent}" ),
                   ),
                 ),
               ],

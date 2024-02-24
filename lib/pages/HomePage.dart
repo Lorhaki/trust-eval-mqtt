@@ -55,9 +55,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> getEvents() async {
-    var temp = Random().nextInt(1000);
-    final mqttClient = MqttServerClient.withPort(
-        ipServeur, temp.toString(), 1883);
     // Connecter le client
     await mqttClient.connect();
     mqttClient.subscribe('getEvents', MqttQos.atLeastOnce);
