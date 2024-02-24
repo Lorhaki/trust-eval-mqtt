@@ -1,16 +1,30 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mqtt_client/mqtt_server_client.dart';
+import 'package:path/path.dart';
 import 'package:trust_eval/pages/Authentification.dart';
+import 'objets/Event.dart';
 import 'objets/Utilisateur.dart';
+import 'objets/fonctions.dart';
 import 'pages/MenuDefillant.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
 Utilisateur userActu = Utilisateur(50, "", "", 0, 0, "");
-int idUser = 0;
+String idUser = generateRandomString(20);
+
+
+
 String ipServeur = '172.24.16.1';
+final mqttClient = MqttServerClient.withPort(ipServeur,idUser.toString(), 1883);
+List<Event> listeEvents = [];
+List<Utilisateur> listeUtilisateur = [];
+bool chPage = false;
 
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -58,4 +72,5 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
+
 }

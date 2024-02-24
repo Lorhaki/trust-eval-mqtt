@@ -1,6 +1,17 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:mqtt_client/mqtt_client.dart';
+import 'package:mqtt_client/mqtt_server_client.dart';
+import 'package:trust_eval/main.dart';
+import 'package:trust_eval/pages/Authentification.dart';
+
+
+
+import '../objets/Utilisateur.dart';
 
 class MyProfile extends StatefulWidget {
   const MyProfile({super.key});
@@ -9,87 +20,90 @@ class MyProfile extends StatefulWidget {
 }
 
 class _MyProfileState extends State<MyProfile> {
-  final currentUser = FirebaseAuth.instance;
+  connexion() async{
+    // Connecter le client
+    await mqttClient.connect();
+    mqttClient.subscribe('getUser/$idUser',MqttQos.atLeastOnce);
+    mqttClient.updates?.listen((List<MqttReceivedMessage<MqttMessage?>>? c) {
+      final recMess = c![0].payload as MqttPublishMessage;
+      final pt = MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
+      final jsonString = pt;
+      Map<String, dynamic> jsonObject = jsonDecode(jsonString);
+      print('Received message: topic is ${c[0].topic}, payload is $pt');
+      setState(() {
+        userActu = Utilisateur.fromJson(jsonObject);
+      });
+    });
+    String mess = idUser.toString();
+    final builder = MqttClientPayloadBuilder();
+    builder.addString(mess);
+
+    // Publier un message
+    mqttClient.publishMessage('users/get', MqttQos.atLeastOnce,builder.payload! );
+    //throw UnimplementedError();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          StreamBuilder(
-              stream: FirebaseFirestore.instance
-                  .collection("Users")
-                  .where("uid", isEqualTo:  currentUser.currentUser!.uid)
-                  .snapshots(),
-              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot){
-                if (snapshot.hasData) {
-                 return ListView.builder(
-                   itemCount: snapshot.data!.docs.length,
-                   shrinkWrap: true,
-                   itemBuilder: (context,i){
-                     var data = snapshot.data!.docs[i];
-                     String pseudo = data['pseudo'];
-                     String email = data['mail'];
-                     String confiance = data['confiance'].toString();
-                     String participation = data['participation'].toString();
-                     String nbEvent = data['nbevents'].toString();
-                     return Padding(
-                       padding:  const EdgeInsets.all(20),
-                       child: Column(
-                         children: [
-                           const SizedBox(height: 40),
-                           const CircleAvatar(
-                             radius: 50,
-                             backgroundColor: Colors.blue,
-                           ),
-                              Card(
-                                 child: ListTile(
-                                 leading: const Icon(Icons.person),
-                                 title:  Text("Pseudo: $pseudo"),
-                                 ),
-                              ),
-                           Card(
-                             child: ListTile(
-                               leading: const Icon(Icons.mail),
-                               title:  Text("Email: $email"),
-                             ),
-                           ),
-                           Card(
-                             child: ListTile(
-                               leading: const Icon(Icons.favorite),
-                               title:  Text("Confiance: $confiance%"),
-                             ),
-                           ),
-                           Card(
-                             child: ListTile(
-                               leading: const Icon(Icons.handshake),
-                               title:  Text("Participation: $participation"),
-                             ),
-                           ),
-                           Card(
-                             child: ListTile(
-                               leading: const Icon(Icons.flag),
-                               title:  Text("Nombre event créés: $nbEvent" ),
-                             ),
-                           ),
-                         ],
-                       ),
-                     );
-                     },
-                 );
-                  // var data = snapshot.data!.docs;
-                } else{ return const Text("Il n'y a pas de données pour cet utilisateur , celui à mal été instancié ERROR");
-                }
-         }
-          ),
-          ElevatedButton(
-            onPressed: () {
-              FirebaseAuth.instance.signOut();
-            },
-            child: const Text("Se déconnecter"),
-          ),
-        ],
+    connexion();
+    String pseudo = userActu.pseudo;
+    String email = userActu.email;
+    String confiance = userActu.scoreConfiance.toString();
+    String participation = userActu.participation.toString();
+    String nbEvent = userActu.nbEvent.toString();
+    return Scaffold(
+      body: Center(
+        child: Column(
+          children: [
+            const SizedBox(height: 40),
+            const CircleAvatar(
+              radius: 50,
+              backgroundColor: Colors.blue,
+            ),
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.person),
+                title:  Text("Pseudo: $pseudo"),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.mail),
+                title:  Text("Email: $email"),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.favorite),
+                title:  Text("Confiance: $confiance%"),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.handshake),
+                title:  Text("Participation: $participation"),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.flag),
+                title:  Text("Nombre event créés: $nbEvent" ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                idUser = "0";
+                Navigator.push(
+                    context, MaterialPageRoute(
+                    builder: (context)=> MyAuth()
+                ));
+              },
+              child: const Text("Se déconnecter"),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
+

@@ -6,8 +6,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
+import 'package:trust_eval/objets/fonctions.dart';
 import 'package:trust_eval/pages/HomePage.dart';
 import 'package:trust_eval/pages/MenuDefillant.dart';
+import '../objets/Event.dart';
 import '../objets/Utilisateur.dart';
 import 'Inscription.dart';
 import 'package:trust_eval/main.dart';
@@ -91,13 +93,16 @@ class _MyAuthState extends State<MyAuth>{
       'mdp': passwordController.text,
       // Ajoutez d'autres champs de données si nécessaire
     };
-    var temp = Random().nextInt(1000);
-    final mqttClient = MqttServerClient.withPort(ipServeur,temp.toString(), 1883);
+    var temp = generateRandomString(20);
+    final mqttClient = MqttServerClient.withPort(ipServeur,idUser.toString(), 1883);
     // Connecter le client
     await mqttClient.connect();
-    mqttClient.subscribe('connexionReussie/${temp}',MqttQos.atLeastOnce);
-    mqttClient.subscribe('connexionEchouee/${temp}',MqttQos.atLeastOnce);
-    print('connexionEchouee/${temp}');
+    mqttClient.subscribe('connexionReussie/$temp',MqttQos.atLeastOnce);
+    mqttClient.subscribe('connexionEchouee/$temp',MqttQos.atLeastOnce);
+    mqttClient.subscribe('versMenu/$temp',MqttQos.atLeastOnce);
+    print('versMenu/$temp');
+
+    //print('connexionEchouee/${temp}');
     //print('creationReussie/');
     mqttClient.updates?.listen((List<MqttReceivedMessage<MqttMessage?>>? c) {
       final recMess = c![0].payload as MqttPublishMessage;
@@ -107,8 +112,20 @@ class _MyAuthState extends State<MyAuth>{
           final pt = MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
           final jsonString = pt;
           Map<String, dynamic> data = jsonDecode(jsonString);
-          idUser = data['id'];
           print('Received message: topic is ${c[0].topic}, payload is $pt');
+          final builder = MqttClientPayloadBuilder();
+          builder.addString(jsonEncode(temp));
+          mqttClient.publishMessage("users/cheminMenu/$temp", MqttQos.atLeastOnce,builder.payload!);
+          idUser = data['id'].toString();
+        }
+      else  if(demande[0] == 'versMenu')
+        {
+          final pt = MqttPublishPayload.bytesToStringAsString(
+              recMess.payload.message);
+          final jsonString = pt;
+          print('Received message: topic is ${c[0].topic}, payload is $pt');
+          List<dynamic> jsonData = jsonDecode(jsonString);
+          listeEvents = jsonData.map((json) => Event.fromJson(json)).toList();
           Navigator.push(
               context, MaterialPageRoute(
               builder: (context)=> MyMenu()
@@ -129,7 +146,7 @@ class _MyAuthState extends State<MyAuth>{
     final builder = MqttClientPayloadBuilder();
     builder.addString(jsonEncode(donneesConnexion));
     // Publier un message
-    mqttClient.publishMessage('users/connexion/${temp}', MqttQos.atLeastOnce,builder.payload! );
+    mqttClient.publishMessage('users/connexion/$temp', MqttQos.atLeastOnce,builder.payload! );
 
 
   }

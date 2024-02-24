@@ -12,6 +12,7 @@ import '../main.dart';
 import '../objets/Utilisateur.dart';
 import 'Authentification.dart';
 import '../objets/dto/CreationEvent.dart';
+import 'MenuDefillant.dart';
 
 /// Determine the current position of the device.
 ///
@@ -206,6 +207,10 @@ class _AjoutEventState extends State<AjoutEvent> {
                                 print('Received message: topic is ${c[0].topic}, event a été créer');
                                 eventController.text = "";
                                 descriptionController.text="";
+                                Navigator.push(
+                                    context, MaterialPageRoute(
+                                    builder: (context)=> MyMenu()
+                                ));
                               });
                               final builder = MqttClientPayloadBuilder();
                               CreationEvent event = CreationEvent(idUser, type, description, position.longitude, position.latitude, int.parse(duree), perimetre);

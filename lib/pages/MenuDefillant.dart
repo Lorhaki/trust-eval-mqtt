@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mqtt_client/mqtt_client.dart';
+import 'package:trust_eval/main.dart';
+import 'package:trust_eval/objets/fonctions.dart';
 import 'package:trust_eval/pages/AjoutEvent.dart';
 import 'MonProfil.dart';
 import 'HomePage.dart';
@@ -16,7 +19,8 @@ class _MyMenuState extends State<MyMenu> {
 
   int _currentIndex = 0;
 
-  setCurrentIndex(int index){
+  setCurrentIndex(int index) async {
+    chPage = true;
     setState(() {
       _currentIndex = index;
     });

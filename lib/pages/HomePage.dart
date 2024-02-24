@@ -16,7 +16,7 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 }
-List<Event> listeEvents = [];
+
 
 class _HomePageState extends State<HomePage> {
 
@@ -69,16 +69,24 @@ class _HomePageState extends State<HomePage> {
       final jsonString = pt;
       print('Received message: topic is ${c[0].topic}, payload is $pt');
       List<dynamic> jsonData = jsonDecode(jsonString);
-      listeEvents = jsonData.map((json) => Event.fromJson(json)).toList();
+      if(mounted)
+        {
+          setState(() {
+            listeEvents = jsonData.map((json) => Event.fromJson(json)).toList();
+          });
+        }
 
-
-      listeEvents.forEach((objet) {
-        print(objet);
-      });
     });
     final builder = MqttClientPayloadBuilder();
+
     // Publier un message
-    mqttClient.publishMessage(
-        'events/getAll', MqttQos.atLeastOnce, builder.payload!);
+    if(chPage)
+      {
+        print("send message events/all");
+        chPage = false;
+        mqttClient.publishMessage(
+            'events/all', MqttQos.atLeastOnce, builder.payload!);
+      }
+
   }
 }

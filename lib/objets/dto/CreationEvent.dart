@@ -1,7 +1,7 @@
 
 // Importez votre classe Event ici
 class CreationEvent {
-  int auteur;
+  String auteur;
   String type;
   String description;
   double longitude;
