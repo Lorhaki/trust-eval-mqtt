@@ -7,8 +7,10 @@ class Utilisateur {
   String mdp;
   int participation;
   int nbEvent;
+  double latitude;
+  double longitude;
 
-  Utilisateur(this.scoreConfiance, this.email, this.mdp, this.nbEvent, this.participation, this.pseudo);
+  Utilisateur(this.scoreConfiance, this.email, this.mdp, this.nbEvent, this.participation, this.pseudo, this.latitude, this.longitude);
 
 
   Map<String, dynamic> toJson() => {
@@ -17,7 +19,9 @@ class Utilisateur {
     'mdp' : mdp,
     'confiance': 50,
     'participation': 0,
-    'nbEvent': 0
+    'nbEvent': 0,
+    'latitude': latitude,
+    'longitude': longitude
   };
 
   factory Utilisateur.fromJson(Map<String, dynamic> json)
@@ -27,7 +31,9 @@ class Utilisateur {
         json["mdp"],
         json["nbEvents"],
         json["participation"],
-        json["pseudo"]);
+        json["pseudo"],
+    json["latitude"],
+    json["longitude"]);
   }
 
 

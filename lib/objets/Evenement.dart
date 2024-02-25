@@ -1,6 +1,6 @@
 
 // Importez votre classe Event ici
-class Event {
+class Evenement {
   int auteur;
   String type;
   String description;
@@ -16,14 +16,14 @@ class Event {
 
 
 
-  Event(this.auteur,this.type,this.description,
+  Evenement(this.auteur,this.type,this.description,
       this.longitude,this.latitude, this.dateCreation,
       this.duree, this.perimetre, this.pseudoUser, this.id, this.likes, this.dislikes);
 
 
-  factory Event.fromJson(Map<String, dynamic> json)
+  factory Evenement.fromJson(Map<String, dynamic> json)
     {
-      return Event(json["idUser"],
+      return Evenement(json["idUser"],
           json["type"],
           json["description"],
           json["longitude"],

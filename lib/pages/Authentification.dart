@@ -4,15 +4,53 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:trust_eval/objets/fonctions.dart';
 import 'package:trust_eval/pages/HomePage.dart';
 import 'package:trust_eval/pages/MenuDefillant.dart';
-import '../objets/Event.dart';
+import '../objets/Evenement.dart';
 import '../objets/Utilisateur.dart';
 import 'Inscription.dart';
 import 'package:trust_eval/main.dart';
+
+Future<Position> _determinePosition() async {
+  bool serviceEnabled;
+  LocationPermission permission;
+
+  // Test if location services are enabled.
+  serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  if (!serviceEnabled) {
+    // Location services are not enabled don't continue
+    // accessing the position and request users of the
+    // App to enable the location services.
+    return Future.error('Location services are disabled.');
+  }
+
+  permission = await Geolocator.checkPermission();
+  if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied) {
+      // Permissions are denied, next time you could try
+      // requesting permissions again (this is also where
+      // Android's shouldShowRequestPermissionRationale
+      // returned true. According to Android guidelines
+      // your App should show an explanatory UI now.
+      return Future.error('Location permissions are denied');
+    }
+  }
+
+  if (permission == LocationPermission.deniedForever) {
+    // Permissions are denied forever, handle appropriately.
+    return Future.error(
+        'Location permissions are permanently denied, we cannot request permissions.');
+  }
+
+  // When we reach here, permissions are granted and we can
+  // continue accessing the position of the device.
+  return await Geolocator.getCurrentPosition();
+}
 
 class MyAuth extends StatefulWidget {
   const MyAuth({super.key});
@@ -86,12 +124,12 @@ class _MyAuthState extends State<MyAuth>{
   }
 
   Future<void> login() async{
-    //Implementer le systéme d'inscription avec Mosquitto ICI !!
-    print("con");
+    Position position = await _determinePosition();
     final donneesConnexion = {
       'mail': emailController.text,
       'mdp': passwordController.text,
-      // Ajoutez d'autres champs de données si nécessaire
+      'latitude': position.latitude,
+      'longitude': position.longitude
     };
     var temp = generateRandomString(20);
     final mqttClient = MqttServerClient.withPort(ipServeur,idUser.toString(), 1883);
@@ -117,6 +155,7 @@ class _MyAuthState extends State<MyAuth>{
           builder.addString(jsonEncode(temp));
           mqttClient.publishMessage("users/cheminMenu/$temp", MqttQos.atLeastOnce,builder.payload!);
           idUser = data['id'].toString();
+          userActu = Utilisateur.fromJson(data);
         }
       else  if(demande[0] == 'versMenu')
         {
@@ -125,7 +164,7 @@ class _MyAuthState extends State<MyAuth>{
           final jsonString = pt;
           print('Received message: topic is ${c[0].topic}, payload is $pt');
           List<dynamic> jsonData = jsonDecode(jsonString);
-          listeEvents = jsonData.map((json) => Event.fromJson(json)).toList();
+          listeEvents = jsonData.map((json) => Evenement.fromJson(json)).toList();
           Navigator.push(
               context, MaterialPageRoute(
               builder: (context)=> MyMenu()

@@ -196,11 +196,13 @@ class _AjoutEventState extends State<AjoutEvent> {
                             if(_formkey.currentState!.validate())
                             {
                               Position position =  await _determinePosition();
+                              userActu.longitude = position.longitude;
+                              userActu.latitude = position.latitude;
                               //LatLng loc = LatLng(position.latitude, position.longitude);
-                              final mqttClient = MqttServerClient.withPort(ipServeur,'zertyuio', 1883);
                               // Connecter le client
                               await mqttClient.connect();
                               mqttClient.subscribe('eventCreer/${idUser}',MqttQos.atLeastOnce);
+
                               mqttClient.updates?.listen((List<MqttReceivedMessage<MqttMessage?>>? c) {
                                 final recMess = c![0].payload as MqttPublishMessage;
                                 final pt = MqttPublishPayload.bytesToStringAsString(recMess.payload.message);

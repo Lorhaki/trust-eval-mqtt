@@ -8,7 +8,7 @@ import 'package:mqtt_client/mqtt_server_client.dart';
 import '../main.dart';
 import 'MenuDefillant.dart';
 import 'SousPages/descriptionEvent.dart';
-import 'package:trust_eval/objets/Event.dart';
+import 'package:trust_eval/objets/Evenement.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key,});
@@ -58,6 +58,7 @@ class _HomePageState extends State<HomePage> {
     // Connecter le client
     await mqttClient.connect();
     mqttClient.subscribe('getEvents', MqttQos.atLeastOnce);
+    mqttClient.subscribe('majEvent', MqttQos.atLeastOnce);
     mqttClient.updates?.listen((List<MqttReceivedMessage<MqttMessage?>>? c) {
       final recMess = c![0].payload as MqttPublishMessage;
       final pt = MqttPublishPayload.bytesToStringAsString(
@@ -68,7 +69,7 @@ class _HomePageState extends State<HomePage> {
       if(mounted)
         {
           setState(() {
-            listeEvents = jsonData.map((json) => Event.fromJson(json)).toList();
+            listeEvents = jsonData.map((json) => Evenement.fromJson(json)).toList();
           });
         }
 
