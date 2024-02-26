@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
@@ -10,9 +9,6 @@ import 'objets/Evenement.dart';
 import 'objets/Utilisateur.dart';
 import 'objets/fonctions.dart';
 import 'pages/MenuDefillant.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
-
 
 /// Determine the current position of the device.
 ///
@@ -56,6 +52,7 @@ Future<Position> _determinePosition() async {
 }
 
 String ipServeur = '172.24.16.1';
+//String ipServeur = '192.168.185.74';
 Utilisateur userActu = Utilisateur(50, "", "", 0, 0, "", 0, 0);
 String idUser = generateRandomString(20);
 final mqttClient = MqttServerClient.withPort(ipServeur,idUser.toString(), 1883);
@@ -67,14 +64,11 @@ bool chPage = false;
 void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
   runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -84,7 +78,7 @@ class _MyAppState extends State<MyApp> {
 
   int _currentIndex = 0;
 
-  setCurrentIndex(int index){
+  void setCurrentIndex(int index){
     setState(() {
       _currentIndex = index;
     });
@@ -97,21 +91,7 @@ class _MyAppState extends State<MyApp> {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
         useMaterial3: true,
       ),
-      home: StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, AsyncSnapshot<User?> snapshot) {
-          if(snapshot.hasData && snapshot.data != null){
-              return const MyMenu();
-          }else if (snapshot.connectionState == ConnectionState.waiting){
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          return const MyAuth();
-        }
-
-      ),
+      home: const MyAuth(),
     );
   }
-
 }

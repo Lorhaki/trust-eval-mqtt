@@ -159,6 +159,8 @@ class _MyAuthState extends State<MyAuth>{
         }
       else  if(demande[0] == 'versMenu')
         {
+          passwordController.text = "";
+          emailController.text = "";
           final pt = MqttPublishPayload.bytesToStringAsString(
               recMess.payload.message);
           final jsonString = pt;

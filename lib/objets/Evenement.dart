@@ -1,5 +1,5 @@
 
-// Importez votre classe Event ici
+
 class Evenement {
   int auteur;
   String type;

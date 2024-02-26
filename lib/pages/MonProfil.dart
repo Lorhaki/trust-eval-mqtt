@@ -92,11 +92,12 @@ class _MyProfileState extends State<MyProfile> {
             ),
             ElevatedButton(
               onPressed: () {
-                idUser = "0";
-                Navigator.push(
-                    context, MaterialPageRoute(
-                    builder: (context)=> MyAuth()
-                ));
+                  idUser = "0";
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyAuth()),
+                );
+                  Navigator.popUntil(context, ModalRoute.withName('/'));
               },
               child: const Text("Se déconnecter"),
             ),

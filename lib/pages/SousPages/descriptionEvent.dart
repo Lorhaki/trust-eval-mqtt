@@ -75,128 +75,49 @@ class descriptionEvent extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Card(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            "Type:",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            event.type,
-                            style: const TextStyle(
-                              fontSize: 20,
-                            ),
-                          ),
-                        ),
-                      ],
+                    child: ListTile(
+                      leading: const Icon(Icons.star),
+                      title:  Text("Type: ${event.type}"),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      if(calculateDistance(userActu.latitude, userActu.longitude, event.latitude, event.longitude) <= event.perimetre)
+                      {
+                        if (!(mqttClient.connectionStatus!.state != MqttConnectionState.connected))
+                        {
+                          final builder = MqttClientPayloadBuilder();
+                          builder.addString(event.pseudoUser);
+                          mqttClient.publishMessage("events/getUser/$idUser", MqttQos.atLeastOnce, builder.payload!);
+                        }
+                        else
+                          print("pas encore connecté");
+                      }
+                      else
+                      {
+                        const snackBar = SnackBar(
+                          content: Text('Vous êtes trop loin pour réagir'),
+                          duration: Duration(seconds: 2), // Durée du message
+                        );
+                        ScaffoldMessenger.of(cont).showSnackBar(snackBar);
+                      }},
+                  child : Card(
+                    child: ListTile(
+                      leading: const Icon(Icons.person),
+                      title:  Text("Utilisateur: ${event.pseudoUser}"),
+                    ),
+                  ),
+    ),
+                  Card(
+                    child: ListTile(
+                      leading: const Icon(Icons.book),
+                      title:  Text("Descirption: \n${event.description}"),
                     ),
                   ),
                   Card(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            "Utilisateur:",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              if(calculateDistance(userActu.latitude, userActu.longitude, event.latitude, event.longitude) <= event.perimetre)
-                                {
-                                  if (!(mqttClient.connectionStatus!.state != MqttConnectionState.connected))
-                                  {
-                                    final builder = MqttClientPayloadBuilder();
-                                    builder.addString(event.pseudoUser);
-                                    mqttClient.publishMessage("events/getUser/$idUser", MqttQos.atLeastOnce, builder.payload!);
-                                  }
-                                  else
-                                    print("pas encore connecté");
-                                }
-                              else
-                                {
-                                  const snackBar = SnackBar(
-                                    content: Text('Vous êtes trop loin pour réagir'),
-                                    duration: Duration(seconds: 2), // Durée du message
-                                  );
-                                  ScaffoldMessenger.of(cont).showSnackBar(snackBar);
-                                }
-                            },
-                            child: Text(
-                              event.pseudoUser,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontStyle: FontStyle.italic,
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Card(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            "Description:",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            event.description,
-                            style: const TextStyle(
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Card(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            "Confiance:",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "$confiance%",
-                            style: const TextStyle(
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                      ],
+                    child: ListTile(
+                      leading: const Icon(Icons.thumb_up),
+                      title:  Text("Confiance: $confiance %"),
                     ),
                   ),
                   Row(

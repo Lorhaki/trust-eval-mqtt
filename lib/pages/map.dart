@@ -9,7 +9,7 @@ import 'package:mqtt_client/mqtt_client.dart';
 import 'package:trust_eval/main.dart';
 import 'package:trust_eval/pages/SousPages/descriptionEvent.dart';
 
-import 'objets/Evenement.dart';
+import '../objets/Evenement.dart';
 
 LatLng loc = LatLng(50.326085, 3.514633);
 

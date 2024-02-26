@@ -5,8 +5,8 @@ import 'package:trust_eval/objets/fonctions.dart';
 import 'package:trust_eval/pages/AjoutEvent.dart';
 import 'MonProfil.dart';
 import 'HomePage.dart';
-import 'package:trust_eval/map.dart';
-import 'package:trust_eval/RechercherUser.dart';
+import 'package:trust_eval/pages/map.dart';
+import 'package:trust_eval/pages/RechercherUser.dart';
 
 class MyMenu extends StatefulWidget {
   const MyMenu({super.key});

@@ -7,7 +7,7 @@
   import 'package:trust_eval/pages/SousPages/descriptionUser.dart';
   import 'package:cloud_firestore/cloud_firestore.dart';
 
-  import 'main.dart';
+  import '../main.dart';
 
   class RechercherUser extends StatefulWidget {
     const RechercherUser({super.key,});
